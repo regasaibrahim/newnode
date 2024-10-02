@@ -1,8 +1,9 @@
 const express = require('express');
 const mysql = require('mysql2');
+require('dotenv').config();
 
 const app = express();
-const port = 'https://regasa-student-node.onrender.com/';
+const port = process.env.PORT || 3000;
 var cors = require('cors')
 
 
@@ -15,10 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Create a connection to the MySQL database
 const connection = mysql.createConnection({
-  host: 'bgb9iw6dz0kr2jxwfaxo-mysql.services.clever-cloud.com',      // your database host
-  user: 'urcei0h40earfqdc',   // your database username
-  password: 'SQf23vh9LhWV8qSFPy74', // your database password
-  database: 'bgb9iw6dz0kr2jxwfaxo' // your database name
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 // Connect to the database
@@ -71,8 +72,8 @@ app.get('/create-table', (req, res) => {
 app.post('/Regasa', (req, res) => {
   const { name, email, deparment, year } = req.body;
 
-  if (!name || !email || !deparment || !year) {
-    return res.status(400).send('Name, email, department, and year are required');
+  if (!name || !email || !department || !year) {
+    return res.status(400).send('Name, email, deparment, and year are required');
   }
 
   const insertUserQuery = 'INSERT INTO users (name, email) VALUES (?, ?)';
